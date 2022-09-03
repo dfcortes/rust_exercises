@@ -1,0 +1,1 @@
+/Users/diegocortes/Documents/opensource/rust_exercises/alternative_comibination/target/debug/alternative_comibination: /Users/diegocortes/Documents/opensource/rust_exercises/alternative_comibination/src/main.rs
