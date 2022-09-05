@@ -24,8 +24,8 @@ impl State {
         self.color = color;
     }
 
-    fn quit(&mut self) {
-        self.quit = true;
+    fn quit(&mut self, q: bool) {
+        self.quit = q;
     }
 
     fn echo(&self, s: String) {
@@ -38,6 +38,12 @@ impl State {
 
     fn process(&mut self, message: Message) {
         // TODO: create a match expression to process the different message variants
+        match message {
+            Message::ChangeColor(my_color) => self.change_color(my_color),
+            Message::Echo(echo) => self.echo(echo),
+            Message::Move(potition) => self.move_position(potition),
+            Message::Quit(my_quit) => self.quit(my_quit)
+        }
     }
 }
 
@@ -48,9 +54,9 @@ mod tests {
     #[test]
     fn test_match_message_call() {
         let mut state = State {
-            quit: true,
-            position: Point { x: 10, y: 15 },
-            color: (255, 0, 255),
+            quit: false,
+            position: Point { x: 0, y: 0 },
+            color: (0, 0, 0),
         };
         state.process(Message::ChangeColor((255, 0, 255)));
         state.process(Message::Echo(String::from("hello world")));
