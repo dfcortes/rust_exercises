@@ -19,6 +19,13 @@ enum Fruit {
     Mango,
     Lychee,
     Pineapple,
+    Orange,
+    Mandarins,
+    Limes,
+    Rasberries,
+    Melon,
+    Watermelons,
+    Rockmelons
 }
 
 fn fruit_basket(basket: &mut HashMap<Fruit, u32>) {
@@ -46,7 +53,22 @@ mod tests {
         basket.insert(Fruit::Apple, 4);
         basket.insert(Fruit::Mango, 2);
         basket.insert(Fruit::Lychee, 5);
+        basket.insert(Fruit::Pineapple, 6);
+        basket.insert(Fruit::Orange, 7);
+        basket.insert(Fruit::Mandarins, 8);
 
+        basket.insert(Fruit::Limes, 9);
+        
+        basket.insert(Fruit::Rasberries, 10);
+        
+        basket.insert(Fruit::Rasberries, 11);
+        
+        basket.insert(Fruit::Melon, 12);
+        
+        basket.insert(Fruit::Watermelons, 13);
+        
+        basket.insert(Fruit::Rockmelons, 14);
+        
         basket
     }
 
