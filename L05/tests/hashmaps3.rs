@@ -21,6 +21,16 @@ struct Team {
     goals_conceded: u8,
 }
 
+impl Team {
+    fn set_goal_Scored(&mut self, scored: &u8) {
+        self.goals_scored = *scored;
+    }
+
+    fn set_goal_conceded(&mut self, conceded: &u8) {
+        self.goals_conceded = *conceded;
+    }
+ }
+
 fn build_scores_table(results: String) -> HashMap<String, Team> {
     // The name of the team is the key and its associated struct is the value.
     let mut scores: HashMap<String, Team> = HashMap::new();
@@ -37,7 +47,7 @@ fn build_scores_table(results: String) -> HashMap<String, Team> {
         // goals scored by team_2 will be the number of goals conceded by
         // team_1.
 
-        let team: Option<&Team> = scores.get(&team_1_name);
+        let team: Option<&mut Team> = scores.get_mut(&team_1_name);
 
         match team {
             None => {
@@ -46,7 +56,28 @@ fn build_scores_table(results: String) -> HashMap<String, Team> {
                     Team {name: String::new(), goals_scored: team_1_score, goals_conceded: team_2_score});
             }
             Some(my_team) => {
-                *my_team.goals_scored = *my_team.goals_scored + 1 as u8;
+                let goal_scored = my_team.goals_scored.clone() + team_1_score;
+                let goal_conceded = my_team.goals_conceded.clone() + team_2_score;
+                
+                my_team.set_goal_Scored(&goal_scored);
+                my_team.set_goal_conceded(&goal_conceded);
+            }
+        }
+
+        let team: Option<&mut Team> = scores.get_mut(&team_2_name);
+
+        match team {
+            None => {
+                scores.insert(
+                    team_2_name,
+                    Team {name: String::new(), goals_scored: team_2_score, goals_conceded: team_1_score});
+            }
+            Some(my_team) => {
+                let goal_scored = my_team.goals_scored.clone() + team_2_score;
+                let goal_conceded = my_team.goals_conceded.clone() + team_1_score;
+
+                my_team.set_goal_Scored(&goal_scored);
+                my_team.set_goal_conceded(&goal_conceded);
             }
         }
 
