@@ -17,14 +17,26 @@
 
 // I AM NOT DONE
 
-use std::num::ParseIntError;
+use std::{num::ParseIntError, fmt};
+
+struct ParseStringError;
+
+impl fmt::Display for ParseIntError {
+    fn fmt(&self, f: &mut fmt::Formatter) ->  fmt::Result {
+        write!(f, "invalid digit found in string")
+    }
+}
 
 pub fn total_cost(item_quantity: &str) -> Result<i32, ParseIntError> {
     let processing_fee = 1;
     let cost_per_item = 5;
     let qty = item_quantity.parse::<i32>();
+    
+    match qty {
+        Ok(q) => Ok(q * cost_per_item + processing_fee),
+        Err(_) => "invalid digit found in string",
+    }
 
-    Ok(qty * cost_per_item + processing_fee)
 }
 
 #[cfg(test)]

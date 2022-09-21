@@ -6,12 +6,31 @@
 
 // I AM NOT DONE
 
-pub fn generate_nametag_text(name: String) -> Option<String> {
+use std::fmt::{self, write, Error};
+
+type Result<T> = std::result::Result<T, EmptyStringError>;
+
+#[derive(Debug, Clone, PartialEq)]
+pub struct EmptyStringError;
+
+impl fmt::Display for EmptyStringError {
+    fn fmt(&self, f: &mut fmt::Formatter) ->  fmt::Result {
+        write!(f, "`name` was empty; it must be nonempty.")
+    }
+}
+
+impl From<&str> for EmptyStringError {
+    fn from(_: &str) -> Self {
+        EmptyStringError
+    }
+}
+
+pub fn generate_nametag_text(name: String) -> Result<String> {
+
     if name.is_empty() {
-        // Empty names aren't allowed.
-        None
+        Err(EmptyStringError)
     } else {
-        Some(format!("Hi! My name is {}", name))
+        Ok(format!("Hi! My name is {}", name))
     }
 }
 
