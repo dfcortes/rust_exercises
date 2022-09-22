@@ -19,24 +19,24 @@
 
 use std::{num::ParseIntError, fmt};
 
-struct ParseStringError;
+type Result<T> = std::result::Result<T, ParseStringError>;
 
-impl fmt::Display for ParseIntError {
+#[derive(Debug, Clone, PartialEq)]
+pub struct ParseStringError;
+
+impl fmt::Display for ParseStringError {
     fn fmt(&self, f: &mut fmt::Formatter) ->  fmt::Result {
         write!(f, "invalid digit found in string")
     }
 }
 
-pub fn total_cost(item_quantity: &str) -> Result<i32, ParseIntError> {
+pub fn total_cost(item_quantity: &str) -> Result<i32> {
     let processing_fee = 1;
     let cost_per_item = 5;
-    let qty = item_quantity.parse::<i32>();
-    
-    match qty {
-        Ok(q) => Ok(q * cost_per_item + processing_fee),
-        Err(_) => "invalid digit found in string",
+    match item_quantity.parse::<i32>() {
+        Ok(qty) => Ok(qty * cost_per_item + processing_fee),
+        Err(_err) => Err(ParseStringError)
     }
-
 }
 
 #[cfg(test)]
