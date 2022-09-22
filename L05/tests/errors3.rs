@@ -4,19 +4,29 @@
 
 // I AM NOT DONE
 
-use std::num::ParseIntError;
-
-
 #[cfg(test)]
 mod tests {
+    use std::{num::ParseIntError, fmt};
 
+    type Result<T> = std::result::Result<T, ParseStringError>;
 
-    pub fn total_cost(item_quantity: &str) -> Result<i32, ParseIntError> {
+    #[derive(Debug, Clone, PartialEq, PartialOrd)]
+    pub struct ParseStringError;
+    
+    impl fmt::Display for ParseStringError {
+        fn fmt(&self, f: &mut fmt::Formatter) ->  fmt::Result {
+            write!(f, "invalid digit found in string")
+        }
+    }
+    
+
+    pub fn total_cost(item_quantity: &str) -> Result<i32> {
         let processing_fee = 1;
         let cost_per_item = 5;
-        let qty = item_quantity.parse::<i32>()?;
-    
-        Ok(qty * cost_per_item + processing_fee)
+        match item_quantity.parse::<i32>() {
+            Ok(qty) => Ok(qty * cost_per_item + processing_fee),
+            Err(_err) => Ok(0)
+        }
     }    
 
     #[test]
@@ -25,11 +35,12 @@ mod tests {
         let pretend_user_input = "8";
     
         let cost = total_cost(pretend_user_input);
-    
-        if cost > tokens {
+        let my_cost = cost.unwrap_or_default();
+
+        if  my_cost > tokens {
             println!("You can't afford that many!");
         } else {
-            tokens -= cost;
+            tokens -= my_cost;
             println!("You now have {} tokens.", tokens);
         }
     }
